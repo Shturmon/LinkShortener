@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace LinkShortener.Web
 {
@@ -9,15 +8,28 @@ namespace LinkShortener.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            RegisterRoutes(config);
+            RegisterFormatters(config);
+        }
 
-            // Web API routes
+        private static void RegisterFormatters(HttpConfiguration config)
+        {
+            var formatters = config.Formatters;
+            formatters.Remove(formatters.XmlFormatter);
+
+            var settings = formatters.JsonFormatter.SerializerSettings;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+
+        private static void RegisterRoutes(HttpConfiguration config)
+        {
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "RedirectApiLink",
+                routeTemplate: "a/{token}",
+                defaults: new {controller = "Link", action = "RedirectLink"}
             );
         }
     }

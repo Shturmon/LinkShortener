@@ -1,0 +1,25 @@
+﻿<div class="links-container">
+    <span>Links</span>
+    <table class="table">
+        <tr>
+            <th>Short Url</th>
+            <th>Date Created</th>
+            <th>Original Url</th>
+            <th>Count Link Clicked</th>
+        </tr>
+        <tr *ngFor="let link of links">
+            <td>
+                <a href="{{link.shortUrl}}">{{link.shortUrl}}</a>
+            </td>
+            <td>
+                {{link.createdDate | date}}
+            </td>
+            <td>
+                <a href="{{link.originalUrl}}">{{link.originalUrl}}</a>
+            </td>
+            <td>
+                {{link.clickOnLinkCounter}}
+            </td>
+        </tr>
+    </table>
+</div>

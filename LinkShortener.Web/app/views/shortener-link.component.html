@@ -1,0 +1,10 @@
+﻿<div class="link-form-container">
+    <div>
+        <span>Enter a link:</span>
+    </div>
+    <input [(ngModel)]="linkUrl" type="text" placeholder="http://yourlink.ru" class="link-form-input-field" />
+    <button class="btn btn-success" type="button" (click)="shorten(linkUrl)">Shorten</button>
+</div>
+<div *ngIf="shortUrl" class="short-link-container">
+    <span>Short Url:<a href="{{shortUrl}}">{{shortUrl}}</a></span>
+</div>
