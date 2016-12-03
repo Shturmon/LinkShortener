@@ -13,12 +13,22 @@ var link_service_1 = require("./link.service");
 var ShortenerLinkComponent = (function () {
     function ShortenerLinkComponent(linkService) {
         this.linkService = linkService;
+        this.validUrl = true;
     }
-    ShortenerLinkComponent.prototype.shorten = function (linkUrl) {
+    ShortenerLinkComponent.prototype.onSubmit = function (linkUrl) {
         var _this = this;
         this.linkService
             .addLink(linkUrl)
-            .then(function (link) { return _this.shortUrl = link; });
+            .then(function (link) {
+            _this.shortUrl = link;
+            _this.validUrl = true;
+        })
+            .catch(function (error) {
+            var erroObject = error.json();
+            if (erroObject.message) {
+                _this.validUrl = false;
+            }
+        });
     };
     ShortenerLinkComponent = __decorate([
         core_1.Component({

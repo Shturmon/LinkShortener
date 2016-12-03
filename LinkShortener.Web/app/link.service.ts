@@ -28,6 +28,6 @@ export class LinkService {
 	}
 
 	private handleError(error: any): Promise<any> {
-		return Promise.reject(error.message || error);
+		return Promise.reject(error);
 	}
 }

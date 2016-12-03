@@ -45,3 +45,10 @@ h1 {
     width: 50%; 
     margin: 0 auto;
 }
+
+.link-alert-message {
+    width: 450px;
+    height: 40px;
+    padding: 10px 0 10px 10px !important;
+    margin-top: 5px;
+}

@@ -10,13 +10,24 @@ import { LinkService } from "./link.service";
 export class ShortenerLinkComponent {
 	linkUrl: string;
 	shortUrl: string;
+	validUrl: boolean;
 
 	constructor(private linkService: LinkService) {
+		this.validUrl = true;
 	}
 
-	shorten(linkUrl: string) {
+	onSubmit(linkUrl: string) {
 		this.linkService
 			.addLink(linkUrl)
-			.then(link => this.shortUrl = link);
+			.then(link => {
+				this.shortUrl = link;
+				this.validUrl = true;
+			})
+			.catch(error => {
+				var erroObject = error.json();
+				if (erroObject.message) {
+					this.validUrl = false;
+				}
+			});
 	}
 }

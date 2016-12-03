@@ -12,11 +12,10 @@ namespace LinkShortener.DAL.Maps
             HasKey(l => l.Id);
 
             Property(l => l.OriginalUrl).IsRequired();
-            Property(l => l.Token)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnAnnotation(IndexAnnotation.AnnotationName, 
-                            new IndexAnnotation(new IndexAttribute { IsUnique = true }));
+            Property(l => l.TokenNumber)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)
+                .HasColumnAnnotation(IndexAnnotation.AnnotationName,
+                            new IndexAnnotation(new IndexAttribute()));
 
             Property(l => l.RowVersion).IsRowVersion();
         }

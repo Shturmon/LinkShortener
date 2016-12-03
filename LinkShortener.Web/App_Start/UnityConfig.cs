@@ -9,6 +9,8 @@ using LinkShortener.Data.Contracts;
 using LinkShortener.DAL;
 using LinkShortener.DAL.Contracts;
 using LinkShortener.DAL.Repositories;
+using LinkShortener.Web.Services;
+using LinkShortener.Web.Services.Contracts;
 using Unity.WebApi;
 
 namespace LinkShortener.Web
@@ -40,7 +42,9 @@ namespace LinkShortener.Web
 
             container.RegisterType<ILinkBusiness, LinkBusiness>();
 
-            container.RegisterType<ITokenGeneratorService, TokenGeneratorService>();
+            container.RegisterType<INumberEncodingService, NumberEncodingService>();
+
+            container.RegisterType<ICookieService, CookieService>();
 
             return container;
         }

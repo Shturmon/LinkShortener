@@ -29,7 +29,8 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 router_1.RouterModule.forRoot([
                     { path: "", component: shortener_link_component_1.ShortenerLinkComponent },
-                    { path: "links", component: link_component_1.LinkComponent }
+                    { path: "links", component: link_component_1.LinkComponent },
+                    { path: "**", redirectTo: "/" }
                 ])
             ],
             declarations: [

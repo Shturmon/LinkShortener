@@ -19,7 +19,8 @@ enableProdMode();
 		FormsModule,
 		RouterModule.forRoot([
 			{ path: "", component: ShortenerLinkComponent },
-			{ path: "links", component: LinkComponent }
+			{ path: "links", component: LinkComponent },
+			{ path: "**", redirectTo: "/"}
 		])
 	],
 	declarations: [ 

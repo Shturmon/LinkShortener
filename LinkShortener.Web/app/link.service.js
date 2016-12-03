@@ -31,7 +31,7 @@ var LinkService = (function () {
             .catch(this.handleError);
     };
     LinkService.prototype.handleError = function (error) {
-        return Promise.reject(error.message || error);
+        return Promise.reject(error);
     };
     LinkService = __decorate([
         core_1.Injectable(), 

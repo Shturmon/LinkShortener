@@ -6,8 +6,9 @@ namespace LinkShortener.Web.Tests
 {
     public class TestDataProvider
     {
-        private const string TokenForTest = "3nfdO";
+        private const string TokenForTest = "b";
         private const string UrlForTest = "http://longurl1.com/";
+        private readonly Guid _userIdTest = Guid.Parse("701238aa-f3fc-46ec-a189-89c39b617c42");
 
         public List<Link> GetLinks()
         {
@@ -18,34 +19,43 @@ namespace LinkShortener.Web.Tests
                     Id = Guid.NewGuid(),
                     CreatedDate = DateTime.Now.AddDays(-3),
                     OriginalUrl = UrlForTest,
-                    Token = TokenForTest,
-                    ClickOnLinkCounter = 100
+                    TokenNumber = 1,
+                    ClickOnLinkCounter = 100,
+                    UserId = _userIdTest
                 },
                 new Link
                 {
                     Id = Guid.NewGuid(),
                     CreatedDate = DateTime.Now,
                     OriginalUrl = "http://longurl2.com/",
-                    Token = "beE32",
-                    ClickOnLinkCounter = 3
+                    TokenNumber = 2,
+                    ClickOnLinkCounter = 3,
+                    UserId = _userIdTest
                 },
                 new Link
                 {
                     Id = Guid.NewGuid(),
                     CreatedDate = DateTime.Now.AddDays(-1),
                     OriginalUrl = "http://longurl3.com/",
-                    Token = "Ui2Na",
-                    ClickOnLinkCounter = 11
+                    TokenNumber = 3,
+                    ClickOnLinkCounter = 11,
+                    UserId = _userIdTest
                 },
                 new Link
                 {
                     Id = Guid.NewGuid(),
                     CreatedDate = DateTime.Now.AddDays(-2),
                     OriginalUrl = "http://longurl4.com/",
-                    Token = "O3dIq",
-                    ClickOnLinkCounter = 24
+                    TokenNumber = 4,
+                    ClickOnLinkCounter = 24,
+                    UserId = _userIdTest
                 }
             };
+        }
+
+        public Guid GetUserId()
+        {
+            return _userIdTest;
         }
 
         public string GetToken()

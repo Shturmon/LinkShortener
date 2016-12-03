@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using System.Web.Http.Routing;
@@ -12,6 +15,7 @@ using LinkShortener.Data.Contracts;
 using LinkShortener.Data.Entities;
 using LinkShortener.DAL.Contracts;
 using LinkShortener.Web.Controllers;
+using LinkShortener.Web.Services.Contracts;
 using LinkShortener.Web.Tests.TestDbProviders;
 using Moq;
 using NUnit.Framework;
@@ -34,6 +38,12 @@ namespace LinkShortener.Web.Tests.Controllers
             var linkRepository = new Mock<ILinkRepository>();
             var unitOfWork = new Mock<IUnitOfWork>();
             var urlHepler = new Mock<UrlHelper>();
+            var cookieService = new Mock<ICookieService>();
+
+            cookieService.Setup(c => c.GetUserId(It.IsAny<HttpRequestMessage>()))
+                    .Returns(_testDataProvider.GetUserId);
+            cookieService.Setup(c => c.StoreUserId(
+                    It.IsAny<HttpResponseMessage>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
             urlHepler.Setup(u => u.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(
                 (string name, object values) =>
@@ -50,10 +60,14 @@ namespace LinkShortener.Web.Tests.Controllers
 
             unitOfWork.Setup(u => u.LinkRepository).Returns(linkRepository.Object);
             unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
-            
-            var tokenGenerator = new TokenGeneratorService();
-            var linkBusiness = new LinkBusiness(unitOfWork.Object, tokenGenerator);
-            _linkController = new LinkController(linkBusiness) { Url = urlHepler.Object };
+
+            var numberEncodingService = new NumberEncodingService();
+            var linkBusiness = new LinkBusiness(unitOfWork.Object, numberEncodingService);
+            _linkController = new LinkController(linkBusiness, cookieService.Object)
+            {
+                Url = urlHepler.Object,
+                Request = new HttpRequestMessage { RequestUri = new Uri("http://hostname")}
+            };
         }
 
         private Mock<DbSet<Link>> MockDbSet()
@@ -81,9 +95,9 @@ namespace LinkShortener.Web.Tests.Controllers
 
             var result = await _linkController.ShortLink(url);
 
-            var okResult = result as OkNegotiatedContentResult<string>;
+            var responseResult = result as ResponseMessageResult;
 
-            Assert.That(okResult, Is.Not.Null);
+            Assert.That(responseResult, Is.Not.Null);
         }
 
         [Test]
